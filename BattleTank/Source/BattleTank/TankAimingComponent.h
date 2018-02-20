@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "Components/StaticMeshComponent.h"
 #include "GameFramework/Actor.h"
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
@@ -23,10 +24,13 @@ protected:
 
 private:
 	FString OurTankName;
+	UStaticMeshComponent* Barrel = nullptr;
 
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	
 	void AimAt(FVector HitLocation);
+
+	void SetBarrelReference(UStaticMeshComponent* BarrelToSet);
 };
