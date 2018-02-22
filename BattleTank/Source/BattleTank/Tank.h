@@ -2,12 +2,12 @@
 
 #pragma once
 
-#include "TankAimingComponent.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
 #include "Tank.generated.h"
 
 class UTankBarrel;
+class UTankAimingComponent;
 
 UCLASS()
 class BATTLETANK_API ATank : public APawn
@@ -35,5 +35,5 @@ public:
 
 private:
 	UPROPERTY(EditAnywhere, Category = Firing)
-	float LaunchSpeed = 100000; // TODO Find sensible default
+	float LaunchSpeed = 100000.f; // TODO Find sensible default
 };
