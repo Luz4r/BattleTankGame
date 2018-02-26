@@ -2,6 +2,7 @@
 
 #include "TankAimingComponent.h"
 #include "TankBarrel.h"
+#include "TankTurret.h"
 #include "Engine/World.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/Actor.h"
@@ -40,7 +41,7 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 	{
 		FVector AimDirection = OutLaunchVelocity.GetSafeNormal();
 		FString TankName = GetOwner()->GetName();
-		MoveBarrelTowards(AimDirection);
+		MoveTurretBarrelTowards(AimDirection);
 		float Time = GetWorld()->GetTimeSeconds();
 		UE_LOG(LogTemp, Warning, TEXT("%f: Aim solution found"), Time);
 	}
@@ -56,12 +57,22 @@ void UTankAimingComponent::SetBarrelReference(UTankBarrel * BarrelToSet)
 	Barrel = BarrelToSet;
 }
 
-void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
+void UTankAimingComponent::SetTurretReference(UTankTurret * TurretToSet)
+{
+	Turret = TurretToSet;
+}
+
+void UTankAimingComponent::MoveTurretBarrelTowards(FVector AimDirection)
 {
 	FRotator BarrelRotator = Barrel->GetForwardVector().Rotation();
-	FRotator AimAsRotator = AimDirection.Rotation();
-	FRotator DeltaRotator = AimAsRotator - BarrelRotator;
+	FRotator TurretRotator = Turret->GetForwardVector().Rotation();
 
-	Barrel->Elevate(5); // TODO remove magic number
+	FRotator AimAsRotator = AimDirection.Rotation();
+
+	FRotator DeltaBarrelRotator = AimAsRotator - BarrelRotator;
+	FRotator DeltaTurretRotator = AimAsRotator - TurretRotator;
+
+	Barrel->Elevate(DeltaBarrelRotator.Pitch);
+	Turret->Rotate(DeltaTurretRotator.Yaw);
 }
 
