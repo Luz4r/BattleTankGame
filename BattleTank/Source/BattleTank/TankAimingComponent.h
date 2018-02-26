@@ -21,7 +21,7 @@ public:
 private:
 	UTankBarrel * Barrel = nullptr;
 
-	UTankTurret * Turret= nullptr;
+	UTankTurret * Turret = nullptr;
 
 	void MoveTurretBarrelTowards(FVector AimDirection);
 
